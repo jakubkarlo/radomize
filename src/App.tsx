@@ -131,8 +131,8 @@ export default function App() {
     clone.setAttribute('height', '972');
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const svgString = new XMLSerializer().serializeToString(clone);
-    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
+    // data URI zamiast blob URL — blob URL nie działa w WebView (Messenger, IG)
+    const svgDataUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
@@ -140,7 +140,6 @@ export default function App() {
       canvas.height = 972;
       const ctx = canvas.getContext('2d')!;
       ctx.drawImage(img, 0, 0);
-      URL.revokeObjectURL(url);
 
       const filename = (params.nickname || 'logo').toLowerCase() + '.png';
       const isInApp = /FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent);
@@ -162,7 +161,7 @@ export default function App() {
         }, 'image/png');
       }
     };
-    img.src = url;
+    img.src = svgDataUrl;
   };
 
   return (
