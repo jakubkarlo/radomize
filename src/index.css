@@ -22,23 +22,6 @@
   --accent-dim:    rgba(8, 133, 46, 0.10);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* ── Dark: Stadium Night ── */
-    --bg:            #030805;
-    --panel:         #060d08;
-    --fg:            #c8e5ce;
-    --fg-muted:      #356645;
-    --border:        #0c1f12;
-    --input-bg:      #040a06;
-    --btn-bg:        #080f09;
-    --btn-hover:     #0b1a0d;
-    --accent:        #08852e;
-    --accent-bright: #10c03c;
-    --accent-glow:   rgba(8, 133, 46, 0.28);
-    --accent-dim:    rgba(8, 133, 46, 0.13);
-  }
-}
 
 body {
   margin: 0;

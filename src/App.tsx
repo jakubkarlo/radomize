@@ -140,15 +140,27 @@ export default function App() {
       canvas.height = 972;
       const ctx = canvas.getContext('2d')!;
       ctx.drawImage(img, 0, 0);
-      canvas.toBlob((pngBlob) => {
-        if (!pngBlob) return;
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(pngBlob);
-        a.download = (params.nickname || 'logo').toLowerCase() + '.png';
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }, 'image/png');
       URL.revokeObjectURL(url);
+
+      const filename = (params.nickname || 'logo').toLowerCase() + '.png';
+      const isInApp = /FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent);
+
+      if (isInApp) {
+        // In-app browsers (Messenger, IG) blokują blob download —
+        // otwieramy dataURL w nowej karcie (przeglądarka systemowa)
+        window.open(canvas.toDataURL('image/png'), '_blank');
+      } else {
+        canvas.toBlob((pngBlob) => {
+          if (!pngBlob) return;
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(pngBlob);
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(a.href), 100);
+        }, 'image/png');
+      }
     };
     img.src = url;
   };
