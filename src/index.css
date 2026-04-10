@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --font:    'Barlow', system-ui, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+  --display: 'Barlow Condensed', system-ui, sans-serif;
+
+  /* ── Light: Daytime Stadium ── */
+  --bg:            #edf5ee;
+  --panel:         #ffffff;
+  --fg:            #0a1a0d;
+  --fg-muted:      #4d7a58;
+  --border:        #c2dcc8;
+  --input-bg:      #f4faf5;
+  --btn-bg:        #edf5ee;
+  --btn-hover:     #daeede;
+  --accent:        #08852e;
+  --accent-bright: #0aaa3a;
+  --accent-glow:   rgba(8, 133, 46, 0.18);
+  --accent-dim:    rgba(8, 133, 46, 0.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* ── Dark: Stadium Night ── */
+    --bg:            #030805;
+    --panel:         #060d08;
+    --fg:            #c8e5ce;
+    --fg-muted:      #356645;
+    --border:        #0c1f12;
+    --input-bg:      #040a06;
+    --btn-bg:        #080f09;
+    --btn-hover:     #0b1a0d;
+    --accent:        #08852e;
+    --accent-bright: #10c03c;
+    --accent-glow:   rgba(8, 133, 46, 0.28);
+    --accent-dim:    rgba(8, 133, 46, 0.13);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+}
+
+h1, h2, h3 { margin: 0; }
+p { margin: 0; }
+button { cursor: pointer; font-family: inherit; }
+input { font-family: inherit; }
