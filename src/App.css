@@ -399,7 +399,7 @@
 }
 
 /* ════════════════════════════════════════════
-   LARGE SCREENS — większe elementy
+   LARGE SCREENS ≥ 1200px
 ════════════════════════════════════════════ */
 @media (min-width: 1200px) {
   .app-header {
@@ -419,7 +419,7 @@
 
   .toolbar-btn {
     padding: 12px 26px;
-    font-size: 17px;
+    font-size: 18px;
     letter-spacing: 2px;
   }
 
@@ -441,19 +441,19 @@
   }
 
   .ctrl-section-title {
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: 2.5px;
     padding-bottom: 7px;
   }
 
   .field-lbl {
-    width: 82px;
-    font-size: 14px;
+    width: 84px;
+    font-size: 15px;
   }
 
   .field-input {
     padding: 8px 12px;
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .color-chips-row {
@@ -470,13 +470,92 @@
   }
 
   .color-chip-label {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 1.2px;
   }
 
   .bg-preset {
     width: 26px;
     height: 26px;
+  }
+}
+
+/* ════════════════════════════════════════════
+   EXTRA LARGE SCREENS ≥ 1600px
+════════════════════════════════════════════ */
+@media (min-width: 1600px) {
+  .app-header {
+    height: 72px;
+  }
+
+  .app-logo-text {
+    font-size: 38px;
+    letter-spacing: 4px;
+  }
+
+  .toolbar {
+    padding: 12px 36px;
+  }
+
+  .toolbar-btn {
+    padding: 14px 32px;
+    font-size: 21px;
+    letter-spacing: 2.2px;
+  }
+
+  .panel-controls {
+    padding: 22px 36px 24px;
+    gap: 52px;
+  }
+
+  .panel-controls > .ctrl-section:first-child {
+    min-width: 320px;
+  }
+
+  .color-sections {
+    gap: 52px;
+  }
+
+  .ctrl-section {
+    gap: 12px;
+  }
+
+  .ctrl-section-title {
+    font-size: 20px;
+    padding-bottom: 8px;
+  }
+
+  .field-lbl {
+    width: 100px;
+    font-size: 17px;
+  }
+
+  .field-input {
+    padding: 10px 14px;
+    font-size: 20px;
+  }
+
+  .color-chips-row {
+    gap: 18px;
+  }
+
+  .color-chip {
+    gap: 8px;
+  }
+
+  .color-chip-swatch {
+    width: 64px;
+    height: 64px;
+  }
+
+  .color-chip-label {
+    font-size: 15px;
+    letter-spacing: 1.4px;
+  }
+
+  .bg-preset {
+    width: 30px;
+    height: 30px;
   }
 }
 
