@@ -401,12 +401,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 48px;
+  height: 30px;
 }
 
 .app-footer-link {
   font-family: var(--display);
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -507,82 +507,58 @@
   }
 }
 
+
 /* ════════════════════════════════════════════
    EXTRA LARGE SCREENS ≥ 1600px
 ════════════════════════════════════════════ */
 @media (min-width: 1600px) {
   .app-header {
-    height: 72px;
+    height: 66px;
   }
 
   .app-logo-text {
-    font-size: 38px;
-    letter-spacing: 4px;
-  }
-
-  .toolbar {
-    padding: 12px 36px;
+    font-size: 34px;
+    letter-spacing: 3px;
   }
 
   .toolbar-btn {
-    padding: 13px 30px;
-    font-size: 19px;
-    letter-spacing: 2.2px;
+    padding: 12px 28px;
+    font-size: 17px;
   }
 
   .panel-controls {
-    padding: 20px 34px 22px;
-    gap: 48px;
+    padding: 18px 30px 20px;
+    gap: 44px;
   }
 
   .panel-controls > .ctrl-section:first-child {
-    min-width: 300px;
+    min-width: 280px;
   }
 
   .color-sections {
-    gap: 48px;
-  }
-
-  .ctrl-section {
-    gap: 11px;
+    gap: 44px;
   }
 
   .ctrl-section-title {
-    font-size: 17px;
-    padding-bottom: 8px;
-  }
-
-  .field-lbl {
-    width: 94px;
     font-size: 15px;
   }
 
+  .field-lbl {
+    width: 86px;
+    font-size: 13px;
+  }
+
   .field-input {
-    padding: 9px 13px;
-    font-size: 18px;
-  }
-
-  .color-chips-row {
-    gap: 16px;
-  }
-
-  .color-chip {
-    gap: 7px;
+    font-size: 16px;
   }
 
   .color-chip-swatch {
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
   }
 
   .color-chip-label {
-    font-size: 13px;
-    letter-spacing: 1.3px;
-  }
-
-  .bg-preset {
-    width: 30px;
-    height: 30px;
+    font-size: 11px;
   }
 }
 

@@ -272,7 +272,7 @@ export default function App() {
 
       <footer className="app-footer">
         <a href="https://cuplink.to/littlerest" target="_blank" rel="noopener noreferrer" className="app-footer-link">
-          Enjoy your radomizations? Click here to support!
+          Radom wasn't built in a day. Buy me a brick.
         </a>
       </footer>
     </div>
