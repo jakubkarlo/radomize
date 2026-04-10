@@ -392,6 +392,33 @@
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
+/* ════════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════════ */
+.app-footer {
+  flex-shrink: 0;
+  background: var(--accent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+}
+
+.app-footer-link {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.app-footer-link:hover {
+  color: #ffffff;
+}
+
 /* .random-n jest używany w header-btn */
 .random-n {
   font-style: italic;

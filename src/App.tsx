@@ -269,6 +269,12 @@ export default function App() {
 
         </aside>
       </div>
+
+      <footer className="app-footer">
+        <a href="https://cuplink.to/littlerest" target="_blank" rel="noopener noreferrer" className="app-footer-link">
+          Enjoy your radomizations? Click here to support!
+        </a>
+      </footer>
     </div>
   );
 }
