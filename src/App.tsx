@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { HexColorPicker } from 'react-colorful';
 import RadomiakLogo from './RadomiakLogo';
 import type { LogoParams } from './RadomiakLogo';
 import './App.css';
@@ -8,6 +9,7 @@ const DEFAULT_PARAMS: LogoParams = {
   earLeftColor: '#FFFFFF', earRightColor: '#FFFFFF',
   topBodyColor: '#FFFFFF', bottomBodyColor: '#FFFFFF',
   stripeColor: '#FFFFFF', bandColor: '#FFFFFF',
+  textColor: '#000000', borderColor: '#000000',
 };
 
 const BG_PRESETS = ['#ffffff', '#f0f0f0', '#111111', '#1a472a', '#1d3461', '#2d2d2d'];
@@ -20,18 +22,81 @@ function ColorChip({ label, value, onChange, active }: {
   onChange: (hex: string) => void;
   active?: boolean;
 }) {
+  const [open, setOpen] = useState(false);
+  const [hexInput, setHexInput] = useState(value.replace('#', '').toUpperCase());
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const swatchRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHexInput(value.replace('#', '').toUpperCase());
+  }, [value]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (
+        !popoverRef.current?.contains(e.target as Node) &&
+        !swatchRef.current?.contains(e.target as Node)
+      ) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  const handleSwatchClick = () => {
+    if (!open && swatchRef.current) {
+      const r = swatchRef.current.getBoundingClientRect();
+      const halfW = 105; // ~połowa szerokości popovera (190px + 2×10px padding)
+      const margin = 8;
+      const rawLeft = r.left + r.width / 2;
+      const left = Math.max(halfW + margin, Math.min(window.innerWidth - halfW - margin, rawLeft));
+      setPos({ top: r.top - 10, left });
+    }
+    setOpen(o => !o);
+  };
+
+  const handleHexInput = (raw: string) => {
+    const upper = raw.toUpperCase().replace(/[^0-9A-F]/g, '');
+    setHexInput(upper);
+    if (upper.length === 6) onChange('#' + upper.toLowerCase());
+  };
+
+  const handleHexBlur = () => {
+    if (hexInput.length !== 6) setHexInput(value.replace('#', '').toUpperCase());
+  };
+
   return (
     <div className={'color-chip' + (active ? ' color-chip--active' : '')}>
-      <div className="color-chip-swatch" style={{ backgroundColor: value }}>
-        <input
-          type="color"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="color-chip-input"
-          title={value.toUpperCase()}
-        />
-      </div>
+      <div
+        ref={swatchRef}
+        className="color-chip-swatch"
+        style={{ backgroundColor: value }}
+        onClick={handleSwatchClick}
+      />
       {label && <span className="color-chip-label">{label}</span>}
+      {open && (
+        <div
+          ref={popoverRef}
+          className="color-chip-popover"
+          style={{ top: pos.top, left: pos.left }}
+        >
+          <HexColorPicker color={value} onChange={onChange} />
+          <div className="color-chip-popover-hex">
+            <span className="color-chip-hex-hash">#</span>
+            <input
+              type="text"
+              className="color-chip-hex"
+              value={hexInput}
+              onChange={(e) => handleHexInput(e.target.value)}
+              onBlur={handleHexBlur}
+              maxLength={6}
+              spellCheck={false}
+              autoComplete="off"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -53,6 +118,8 @@ export default function App() {
       bottomBodyColor: randomHex(),
       stripeColor:     randomHex(),
       bandColor:       randomHex(),
+      textColor:       randomHex(),
+      borderColor:     randomHex(),
     }));
   };
 
@@ -117,10 +184,10 @@ export default function App() {
             <div className="ctrl-section-title">DATA</div>
             {(
               [
-                { key: 'prefix',   label: 'Label 1', placeholder: 'np. THE, LOS' },
-                { key: 'nickname', label: 'Label 2', placeholder: 'np. GUNNERS'  },
-                { key: 'location', label: 'Label 3', placeholder: 'np. LONDON'   },
-                { key: 'year',     label: 'Year',      placeholder: 'np. 1886'     },
+                { key: 'prefix',   label: 'Label 1', placeholder: 'e.g. FC' },
+                { key: 'nickname', label: 'Label 2', placeholder: 'e.g. BLAUGRANA'  },
+                { key: 'location', label: 'Label 3', placeholder: 'e.g. MADRID'   },
+                { key: 'year',     label: 'Year',      placeholder: 'e.g. 966'     },
               ] as { key: keyof LogoParams; label: string; placeholder: string }[]
             ).map(({ key, label, placeholder }) => (
               <div key={key} className="field">
@@ -158,6 +225,14 @@ export default function App() {
               <div className="color-chips-row">
                 <ColorChip label="Background" value={params.stripeColor} onChange={(v) => set('stripeColor', v)} />
                 <ColorChip label="Stripe"  value={params.bandColor}   onChange={(v) => set('bandColor', v)} />
+              </div>
+            </section>
+
+            <section className="ctrl-section">
+              <div className="ctrl-section-title">Text and border</div>
+              <div className="color-chips-row">
+                <ColorChip label="Text"   value={params.textColor}   onChange={(v) => set('textColor', v)} />
+                <ColorChip label="Border" value={params.borderColor} onChange={(v) => set('borderColor', v)} />
               </div>
             </section>
           </div>

@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python3:*)",
-      "Bash(ls \"C:/3e_work/workspaces/private/radomize/\"*.lock \"C:/3e_work/workspaces/private/radomize/yarn.lock\")"
-    ]
-  }
-}
