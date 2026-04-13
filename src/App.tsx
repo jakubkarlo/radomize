@@ -104,6 +104,7 @@ function ColorChip({ label, value, onChange, active }: {
 export default function App() {
   const [params, setParams] = useState<LogoParams>(DEFAULT_PARAMS);
   const [bgColor, setBgColor] = useState('#f0f0f0');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const logoRef = useRef<HTMLDivElement>(null);
 
   const set = (field: keyof LogoParams, value: string) =>
@@ -131,7 +132,6 @@ export default function App() {
     clone.setAttribute('height', '972');
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const svgString = new XMLSerializer().serializeToString(clone);
-    // data URI zamiast blob URL — blob URL nie działa w WebView (Messenger, IG)
     const svgDataUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
     const img = new Image();
     img.onload = () => {
@@ -142,24 +142,32 @@ export default function App() {
       ctx.drawImage(img, 0, 0);
 
       const filename = (params.nickname || 'logo').toLowerCase() + '.png';
-      const isInApp = /FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent);
+      const isInApp = /FBAN|FBAV|FBIOS|FBANDROID|Instagram|MessengerLite|Line\//i.test(navigator.userAgent);
 
       if (isInApp) {
-        // In-app browsers (Messenger, IG) blokują blob download —
-        // otwieramy dataURL w nowej karcie (przeglądarka systemowa)
-        window.open(canvas.toDataURL('image/png'), '_blank');
-      } else {
-        canvas.toBlob((pngBlob) => {
-          if (!pngBlob) return;
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(pngBlob);
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          setTimeout(() => URL.revokeObjectURL(a.href), 100);
-        }, 'image/png');
+        setPreviewUrl(canvas.toDataURL('image/png'));
+        return;
       }
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const file = new File([blob], filename, { type: 'image/png' });
+        if (navigator.canShare?.({ files: [file] })) {
+          try {
+            await navigator.share({ files: [file] });
+            return;
+          } catch (e) {
+            if ((e as DOMException).name === 'AbortError') return;
+          }
+        }
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(a.href), 100);
+      }, 'image/png');
     };
     img.src = svgDataUrl;
   };
@@ -274,6 +282,16 @@ export default function App() {
           Radom wasn't built in a day. Buy me a brick.
         </a>
       </footer>
+
+      {previewUrl && (
+        <div className="save-overlay" onClick={() => setPreviewUrl(null)}>
+          <div className="save-overlay-box" onClick={e => e.stopPropagation()}>
+            <p className="save-overlay-hint">Przytrzymaj obrazek i wybierz „Zapisz"</p>
+            <img src={previewUrl} alt="logo" className="save-overlay-img" />
+            <button className="save-overlay-close" onClick={() => setPreviewUrl(null)}>Zamknij</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
