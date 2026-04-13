@@ -104,7 +104,9 @@ function ColorChip({ label, value, onChange, active }: {
 export default function App() {
   const [params, setParams] = useState<LogoParams>(DEFAULT_PARAMS);
   const [bgColor, setBgColor] = useState('#f0f0f0');
+  const [inAppDismissed, setInAppDismissed] = useState(false);
   const logoRef = useRef<HTMLDivElement>(null);
+  const isInApp = /FBAN|FBAV|FBIOS|FBANDROID|Instagram|MessengerLite|Line\//i.test(navigator.userAgent);
 
   const set = (field: keyof LogoParams, value: string) =>
     setParams((p) => ({ ...p, [field]: value }));
@@ -155,6 +157,16 @@ export default function App() {
 
   return (
     <div className="app">
+      {isInApp && !inAppDismissed && (
+        <div className="inapp-overlay">
+          <div className="inapp-overlay-box">
+            <p className="inapp-overlay-text">
+              Your browser does not allow saving files. Click the <strong>three dots</strong> and select <strong>"Open in browser"</strong>, then start editing.
+            </p>
+            <button className="inapp-overlay-close" onClick={() => setInAppDismissed(true)}>Got it</button>
+          </div>
+        </div>
+      )}
       <header className="app-header">
         <span className="app-logo-text">radomize.it</span>
       </header>
