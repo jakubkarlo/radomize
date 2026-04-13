@@ -135,44 +135,23 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const img = new Image();
     img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = 1028;
-          canvas.height = 972;
-          const ctx = canvas.getContext('2d')!;
-
-          ctx.drawImage(img, 0, 0);
-
-          canvas.toBlob((pngBlob) => {
-            if (!pngBlob) return;
-            const pngUrl = URL.createObjectURL(pngBlob);
-            const fileName = (params.nickname || 'logo').toLowerCase() + '.png';
-
-            const isApp = /FBAN|FBAV|Instagram|Messenger/i.test(navigator.userAgent);
-
-            if (isApp) {
-              const newWindow = window.open();
-              if (newWindow) {
-                newWindow.document.write(`<img src="${pngUrl}" style="width:100%" />`);
-                newWindow.document.title = fileName;
-              } else {
-                window.location.href = pngUrl;
-              }
-            } else {
-              const a = document.createElement('a');
-              a.href = pngUrl;
-              a.download = fileName;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-
-              setTimeout(() => URL.revokeObjectURL(pngUrl), 100);
-            }
-          }, 'image/png');
-
-          URL.revokeObjectURL(url);
-        };
-        img.src = url;
-      };
+      const canvas = document.createElement('canvas');
+      canvas.width = 1028;
+      canvas.height = 972;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((pngBlob) => {
+        if (!pngBlob) return;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(pngBlob);
+        a.download = (params.nickname || 'logo').toLowerCase() + '.png';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }, 'image/png');
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  };
 
   return (
     <div className="app">
